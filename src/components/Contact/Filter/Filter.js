@@ -1,6 +1,5 @@
 import { Form, Label } from 'components/AuthForm/AuthForm.styled';
 import { useSelector, useDispatch } from 'react-redux';
-import { setFilter } from 'redux/user/FilterSlice';
 import { selectFilter } from 'redux/user/selectors';
 import { filterContacts } from 'redux/user/slice';
 
@@ -8,7 +7,7 @@ export const Filter = () => {
   const dispatch = useDispatch();
   const filter = useSelector(selectFilter);
   return (
-    <>
+    <Form>
       <Label>
         Find ny name
         <input
@@ -21,6 +20,6 @@ export const Filter = () => {
           }}
         />
       </Label>
-    </>
+    </Form>
   );
 };

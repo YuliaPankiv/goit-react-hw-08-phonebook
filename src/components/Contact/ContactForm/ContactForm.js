@@ -1,4 +1,3 @@
-import { nanoid } from '@reduxjs/toolkit';
 import { Button, Form, Label } from 'components/AuthForm/AuthForm.styled';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
