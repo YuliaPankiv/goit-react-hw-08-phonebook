@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 export const Link = styled(NavLink)`
   padding: 8px 16px;
-  margin: auto;
+  // margin: auto;
   border-radius: 4px;
   text-decoration: none;
   color: black;

@@ -1,5 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { registerUser } from './operation';
+import {
+  logOutUser,
+  loginUser,
+  refreshCurrentUser,
+  registerUser,
+} from './operation';
 
 const authSlice = createSlice({
   name: 'auth',
@@ -7,7 +12,6 @@ const authSlice = createSlice({
     user: {
       email: null,
       name: null,
-      password: null,
     },
     isAuth: false,
     token: null,
@@ -18,17 +22,21 @@ const authSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(registerUser.fulfilled, (state, { payload }) => {
-        console.log('dfg===>>', payload);
-
-        //   ...state,
-        //   isLoading: false,
-        //   ...payload,
-        //   isAuth: true,
-        state.isLoading = false;
-        state.user = payload.user;
-        state.token = payload.token;
-        state.isAuth = true;
+        return { ...state, isLoading: false, ...payload, isAuth: true };
       })
+      .addCase(loginUser.fulfilled, (state, { payload }) => {
+        console.log(payload);
+        return { ...state, isLoading: false, ...payload, isAuth: true };
+      })
+      .addCase(refreshCurrentUser.fulfilled, (state, { payload }) => {
+        return { ...state, isLoading: false, ...payload, isAuth: true };
+      })
+      .addCase(logOutUser.fulfilled, state => {
+        state.isLoading = false;
+        state.user = { name: '', email: '' };
+        state.isAuth = false;
+      })
+
       .addMatcher(action =>
         action.type.startsWith(
           'auth' && action.type.endsWith('/pending'),
@@ -41,7 +49,6 @@ const authSlice = createSlice({
         action.type.startsWith(
           'auth' && action.type.endsWith('/rejected'),
           (state, { payload }) => {
-            console.log(state);
             state.isLoading = false;
             state.error = payload;
           }

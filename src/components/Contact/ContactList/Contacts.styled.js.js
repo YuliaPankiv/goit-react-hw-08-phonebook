@@ -14,6 +14,7 @@ export const Item = styled.li`
   background-color: #f9f9f9;
   border-radius: 4px;
   align-items: center;
+  justify-content: space-between;
 `;
 
 export const Delete = styled.button`

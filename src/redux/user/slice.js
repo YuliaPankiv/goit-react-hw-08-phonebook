@@ -1,27 +1,64 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchAll } from './operation';
+import { addContact, deleteContact, getContacts } from './operation';
+import { logOutUser } from 'redux/auth/operation';
 
-export const contactsSlice = createSlice({
+const contactSlice = createSlice({
   name: 'contacts',
   initialState: {
-    contacts: [],
-    isLoading: false,
-    error: '',
+    contacts: { items: [], isLoading: false, error: null },
+    filter: '',
   },
-  extraReducers: builder =>
+  reducers: {
+    filterContacts(state, { payload }) {
+      state.filter = payload;
+    },
+  },
+  extraReducers: builder => {
     builder
-      .addCase(fetchAll.pending, state => {
-        state.isLoading = true;
+      .addCase(getContacts.fulfilled, (state, { payload }) => {
+        state.contacts.isLoading = false;
+        state.contacts.items = payload;
+        state.contacts.error = null;
       })
-      .addCase(fetchAll.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.contacts = payload;
-        state.error = '';
+      .addCase(deleteContact.fulfilled, (state, action) => {
+        state.contacts.isLoading = false;
+        state.contacts.items = state.contacts.items.filter(
+          el => el.id !== action.payload
+        );
+        state.contacts.error = null;
       })
-
-      .addCase(fetchAll.rejected, (state, { payload }) => {
+      .addCase(addContact.fulfilled, (state, { payload }) => {
+        console.log(payload);
         state.isLoading = false;
-        state.error = payload.message;
-      }),
+        state.contacts.items.push(payload);
+        state.contacts.error = null;
+      })
+      .addCase(logOutUser.fulfilled, (state, { payload }) => {
+        console.log(payload);
+        state.isLoading = false;
+        state.contacts.items.push(payload);
+        state.contacts.error = null;
+      })
+      .addMatcher(
+        action => action.type.endsWith('/pending'),
+        state => {
+          state.contacts.isLoading = true;
+          state.contacts.error = null;
+        }
+      )
+      .addMatcher(
+        action =>
+          action.type.startsWith('contacts') &&
+          action.type.endsWith('/pending'),
+        (state, { payload }) => {
+          state.contacts.isLoading = false;
+          state.contacts.error = payload;
+        }
+      );
+  },
 });
-export const contactReducer = contactsSlice.reducer;
+
+// export const { addContact, filterContacts, deleteContact } =
+//   contactSlice.actions;
+export const contactReducer = contactSlice.reducer;
+export const { filterContacts } = contactSlice.actions;

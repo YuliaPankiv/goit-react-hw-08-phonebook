@@ -1,13 +1,16 @@
 import { Container } from 'components/Layout/Layout.styled';
-import { LoginForm } from 'components/LoginForm/LoginForm';
-import { Outlet } from 'react-router-dom';
 
 export const HomePage = () => {
   return (
-    <>
-      {/* <LoginForm /> */}
-      {/* <Outlet /> */}
-      {/* <Route path="/login" element={<LoginForm />} /> */}
-    </>
+    <Container>
+      <h1>Welcome to the “Contact Book” app!</h1>
+      <p>
+        This app is designed to make managing your contacts as simple and
+        efficient as possible.
+      </p>
+      <p>On the home page, you will find a list of all your contacts. </p>
+    <p></p>
+    
+    </Container>
   );
 };

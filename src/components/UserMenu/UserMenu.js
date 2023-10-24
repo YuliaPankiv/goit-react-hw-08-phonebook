@@ -1,19 +1,20 @@
-import { Link, List } from 'components/Navigation/Navigation.styled';
-import { Button, Container } from './UserMenu.styled';
+import { Button, Mail } from './UserMenu.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectEmail } from 'redux/auth/selectors';
+import { logOutUser } from 'redux/auth/operation';
 
 export const UserMenu = () => {
+  const email = useSelector(selectEmail);
+  const dispatch = useDispatch();
   return (
     <>
-      {/* <ul>
-        <List>
-          <Link to="/users">Contacts</Link>
-        </List>
-      </ul> */}
-      <>
-        <p>mango@mail.com</p>
+      <Mail>
+        Welcome&nbsp;<span>{email}</span>
+      </Mail>
 
-        <Button>Logout</Button>
-      </>
+      <Button type="button" onClick={() => dispatch(logOutUser())}>
+        Logout
+      </Button>
     </>
   );
 };

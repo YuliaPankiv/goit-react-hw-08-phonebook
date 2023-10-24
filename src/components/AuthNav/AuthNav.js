@@ -1,4 +1,4 @@
-import { Link, List, Item } from './AuthNav.styled';
+import { Item, Link, List } from 'components/NavStyle.styled';
 
 export const AuthNav = () => {
   return (
@@ -10,7 +10,6 @@ export const AuthNav = () => {
         <Item>
           <Link to="/login">Sign In</Link>
         </Item>
-        
       </List>
     </nav>
   );
