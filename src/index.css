@@ -7,13 +7,16 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url('./img/contact.jpg');
-  background-repeat: no-repeat;
+  /* background-image: url('./img/contact.jpg'); */
+  /* background-repeat: no-repeat; */
   /* background-position: center; */
-  background-size: cover;
+  /* background-size: cover; */
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+ul {
+  padding: 0;
 }

@@ -1,38 +1,41 @@
 import { Route, Routes } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { selectIsAuth } from 'redux/auth/selectors';
-import { useEffect } from 'react';
-import { refreshCurrentUser } from 'redux/auth/operation';
-import { Navigation } from 'components/Navigation/Navigation';
-import { UserPage } from 'pages/UserPage';
-import { Contacts } from 'components/Contact/ContactList/Contacts';
-import { LoginForm } from 'components/LoginForm/LoginForm';
+import { Suspense } from 'react';
 import { AuthForm } from 'components/AuthForm/AuthForm';
+import LoginPage from 'pages/LoginPage';
+import PrivateRoute from '../PrivateRoute';
+import PublicRoute from '../PublicRoute';
+import Layout from '../Layout/Layout';
+import UserPage from '../../pages/UserPage';
 import { HomePage } from 'pages/HomePage';
-
+// const UserPage = import(() => '../../pages/UserPage');
 export const App = () => {
-  const isAuth = useSelector(selectIsAuth);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(refreshCurrentUser);
-  }, [dispatch]);
   return (
     <>
-      <Navigation />
-      {isAuth ? (
+      <Suspense fallback={'Loading.....'}>
         <Routes>
-          <Route path="/users" element={<UserPage />} />
-          <Route path="contacts" element={<Contacts />} />
-          <Route path="*" element={<HomePage />} />
+          <Route path="/" element={<Layout />}>
+            <Route index element={<HomePage />} />{' '}
+            <Route
+              path="/contacts"
+              element={
+                <PrivateRoute component={UserPage} redirectTo="/login" />
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <PublicRoute component={AuthForm} redirectTo="/contacts" />
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <PublicRoute component={LoginPage} redirectTo="/contacts" />
+              }
+            />
+          </Route>
         </Routes>
-      ) : (
-        <Routes>
-          {/* <Route path="/" element={<HomePage />} /> */}
-          <Route path="/register" element={<AuthForm />} />
-          <Route path="/login" element={<LoginForm />} />
-          <Route path="*" element={<HomePage />} />
-        </Routes>
-      )}
+      </Suspense>
     </>
   );
 };

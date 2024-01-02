@@ -9,8 +9,7 @@ export const HomePage = () => {
         efficient as possible.
       </p>
       <p>On the home page, you will find a list of all your contacts. </p>
-    <p></p>
-    
+      <p></p>
     </Container>
   );
 };

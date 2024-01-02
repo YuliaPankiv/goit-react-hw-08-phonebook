@@ -10,11 +10,11 @@ import {
   REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import { contactReducer } from './user/slice';
+import { contactReducer } from './user/contactSlice';
 import { authReducer } from './auth/AuthSlice';
 
 const authPersistedConfig = {
-  key: 'token',
+  key: 'auth',
   storage,
   whitelist: ['token'],
 };

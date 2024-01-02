@@ -1,65 +1,125 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+
+import { useDispatch } from 'react-redux';
 import { registerUser } from 'redux/auth/operation';
-import { selectIsLoading } from 'redux/auth/selectors';
-import { Button, Form, Label } from './AuthForm.styled';
-import { Container } from 'components/Layout/Layout.styled';
+import { Copyright } from 'components/common/Copyright';
 
 export const AuthForm = () => {
-  const [form, setForm] = useState({ name: '', email: '', password: '' });
   const dispatch = useDispatch();
-  const isLoading = useSelector(selectIsLoading);
-  const handleChange = e => {
-    const { name, value } = e.target;
-    setForm(prevForm => {
-      return { ...prevForm, [name]: value };
-    });
-  };
-  const handleSubmit = e => {
-    e.preventDefault();
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const form = {
+      name: data.get('name'),
+      email: data.get('email'),
+      password: data.get('password'),
+    };
+
     dispatch(registerUser(form));
   };
+
   return (
-    <Container>
-      <h3>Sign Up</h3>
-      <Form onSubmit={handleSubmit}>
-        <Label>
-          Username
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-            onChange={handleChange}
-          />
-        </Label>
-        <Label>
-          Email address{' '}
-          <input
-            type="text"
-            name="email"
-            value={form.email}
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="email"
-            required
-            onChange={handleChange}
-          />
-        </Label>
-        <Label>
-          Password{' '}
-          <input
-            type="text"
-            name="password"
-            value={form.password}
-            title="password"
-            required
-            onChange={handleChange}
-          />
-        </Label>
-        <Button type="submit">{isLoading ? 'Loading...' : 'Sign Up'}</Button>
-      </Form>
-    </Container>
+    <Grid container component="main" sx={{ height: '100vh' }}>
+      <CssBaseline />
+      <Grid
+        item
+        xs={false}
+        sm={4}
+        md={7}
+        sx={{
+          backgroundImage: 'url(https://source.unsplash.com/random?wallpapers)',
+          backgroundRepeat: 'no-repeat',
+          backgroundColor: t =>
+            t.palette.mode === 'light'
+              ? t.palette.grey[50]
+              : t.palette.grey[900],
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Box
+          sx={{
+            my: 8,
+            mx: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>{' '}
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 1 }}
+          >
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              label="Name"
+              name="name"
+              autoComplete="name"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign Up
+            </Button>
+            <Grid container>
+              <Grid item>
+                <Link component={RouterLink} to="/login" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
+            <Copyright sx={{ mt: 5 }} />
+          </Box>
+        </Box>
+      </Grid>
+    </Grid>
   );
 };

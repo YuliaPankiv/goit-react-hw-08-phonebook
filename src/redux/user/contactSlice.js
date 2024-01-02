@@ -1,23 +1,30 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addContact, deleteContact, getContacts } from './operation';
-import { logOutUser } from 'redux/auth/operation';
-
+import { addContact, deleteContact, fetchContacts } from './operation';
+const initialState = {
+  contacts: { items: [], isLoading: false, error: null },
+  filter: '',
+};
 const contactSlice = createSlice({
   name: 'contacts',
-  initialState: {
-    contacts: { items: [], isLoading: false, error: null },
-    filter: '',
-  },
+  initialState,
   reducers: {
-    filterContacts(state, { payload }) {
+    setFilter(state, { payload }) {
       state.filter = payload;
     },
   },
   extraReducers: builder => {
     builder
-      .addCase(getContacts.fulfilled, (state, { payload }) => {
+      .addCase(fetchContacts.fulfilled, (state, { payload }) => {
+        console.log('fetr');
+        console.log(payload);
         state.contacts.isLoading = false;
         state.contacts.items = payload;
+        state.contacts.error = null;
+      })
+      .addCase(addContact.fulfilled, (state, { payload }) => {
+        console.log('add');
+        state.contacts.isLoading = false;
+        state.contacts.items.push(payload);
         state.contacts.error = null;
       })
       .addCase(deleteContact.fulfilled, (state, action) => {
@@ -25,18 +32,6 @@ const contactSlice = createSlice({
         state.contacts.items = state.contacts.items.filter(
           el => el.id !== action.payload
         );
-        state.contacts.error = null;
-      })
-      .addCase(addContact.fulfilled, (state, { payload }) => {
-        console.log(payload);
-        state.isLoading = false;
-        state.contacts.items.push(payload);
-        state.contacts.error = null;
-      })
-      .addCase(logOutUser.fulfilled, (state, { payload }) => {
-        console.log(payload);
-        state.isLoading = false;
-        state.contacts.items.push(payload);
         state.contacts.error = null;
       })
       .addMatcher(
@@ -49,7 +44,7 @@ const contactSlice = createSlice({
       .addMatcher(
         action =>
           action.type.startsWith('contacts') &&
-          action.type.endsWith('/pending'),
+          action.type.endsWith('/rejected'),
         (state, { payload }) => {
           state.contacts.isLoading = false;
           state.contacts.error = payload;
@@ -58,7 +53,5 @@ const contactSlice = createSlice({
   },
 });
 
-// export const { addContact, filterContacts, deleteContact } =
-//   contactSlice.actions;
 export const contactReducer = contactSlice.reducer;
-export const { filterContacts } = contactSlice.actions;
+export const { setFilter } = contactSlice.actions;

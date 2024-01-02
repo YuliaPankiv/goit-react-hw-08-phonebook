@@ -8,8 +8,8 @@ export const Container = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   padding: 20px;
-  box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.1), 0 0 0 2px rgb(255, 255, 255),
-    0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
+  /* box-shadow: inset 0 -3em 3em rgba(0, 0, 0, 0.1), 0 0 0 2px rgb(255, 255, 255),
+    0.3em 0.3em 1em rgba(0, 0, 0, 0.3); */
 
   opacity: 0.96;
   & h1 {
@@ -29,9 +29,9 @@ export const Header = styled.header`
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 16px;
+  /* margin-bottom: 16px; */
   border-bottom: 1px solid black;
-  background-color: #020a12bd;
+  background-color: #4b679a;
   > nav {
     display: flex;
     gap: 25px;
